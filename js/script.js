@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Add exhibit number and file path
   data.forEach((item, index) => {
     item.exhibitNo = String(index + 1).padStart(3, '0');
-    item.filePath = `/files/${folderName}/${sectionLetter}-${item.exhibitNo}.pdf`;
+    item.filePath = `files/${folderName}/${sectionLetter}-${item.exhibitNo}.pdf`;
   });
 
   const tableBody = document.getElementById('table-body');
