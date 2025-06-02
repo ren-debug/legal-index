@@ -1,17 +1,35 @@
 
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>PDF Viewer</title>
-<style>
-    body { display: flex; font-family: sans-serif; margin: 0; }
-    #sidebar { width: 200px; padding: 10px; border-right: 1px solid #ccc; }
-    #viewer-container { flex: 1; padding: 20px; }
-    canvas { width: 50%; border: 1px solid #ddd; }
-    #controls { margin-top: 10px; }
-    #controls button { margin-right: 10px; }
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+    }
+    #controls {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      z-index: 999;
+    }
+    canvas {
+      display: block;
+      margin: 90px auto 20px;
+      border: 1px solid #ccc;
+    }
+
   </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
 </head>
@@ -38,7 +56,8 @@
   let pdfDoc = null,
     currentScale = 1,
       currentPage = 1,
-      scale = 1,
+      scale = 1.2,
+  
       canvas = document.getElementById('pdfViewer'),
       ctx = canvas.getContext('2d');
 
@@ -111,9 +130,7 @@ window.addEventListener('message', (event) => {
   }
 });
 
-
-
-  window.queueRenderPage = queueRenderPage;
+window.queueRenderPage = queueRenderPage;
 
 document.getElementById('zoom-in').addEventListener('click', () => {
   currentScale = Math.min(currentScale + 0.25, 3);
@@ -123,6 +140,9 @@ document.getElementById('zoom-out').addEventListener('click', () => {
   currentScale = Math.max(currentScale - 0.25, 0.5);
   renderPage(currentPage);
 });
+
+
+
 </script>
 </body>
 </html>

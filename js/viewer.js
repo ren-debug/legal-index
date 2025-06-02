@@ -76,6 +76,15 @@
       }
   });
 
+  document.getElementById('zoom-in').addEventListener('click', () => {
+  currentScale = Math.min(currentScale + 0.25, 3);
+  renderPage(currentPage);
+});
+document.getElementById('zoom-out').addEventListener('click', () => {
+  currentScale = Math.max(currentScale - 0.25, 0.5);
+  renderPage(currentPage);
+});
+
   function attachPdfViewListeners() {
   document.querySelectorAll('.view-pdf-link').forEach(link => {
     link.addEventListener('click', (event) => {
