@@ -1,0 +1,67 @@
+
+@page {
+  size: A4 landscape;
+  margin: 20mm;
+}
+
+body {
+  font-size: 7px;
+  color: #000;
+  background: none;
+}
+
+.no-print {
+  display: none !important;
+}
+
+.print-header, .print-footer {
+  position: fixed;
+  width: 100%;
+  text-align: center;
+  font-size: 8px;
+}
+
+.print-header {
+  top: 0;
+}
+
+.print-footer {
+  bottom: 0;
+}
+
+.table-container {
+  margin-top: 30mm;
+  margin-bottom: 20mm;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  page-break-inside: auto;
+  font-size: 7px;
+}
+
+thead {
+  display: table-header-group;
+}
+
+tfoot {
+  display: table-footer-group;
+}
+
+tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Exception: allow final row of table to squeeze in if needed */
+tr:last-child {
+  page-break-inside: auto;
+  break-inside: auto;
+}
+
+
+th, td {
+  border: 1px solid #000;
+  padding: 2px 4px;
+}
