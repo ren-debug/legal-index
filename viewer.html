@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>PDF Viewer</title>
+<style>
+    body { display: flex; font-family: sans-serif; margin: 0; }
+    #sidebar { width: 200px; padding: 10px; border-right: 1px solid #ccc; }
+    #viewer-container { flex: 1; padding: 20px; }
+    canvas { width: 50%; border: 1px solid #ddd; }
+    #controls { margin-top: 10px; }
+    #controls button { margin-right: 10px; }
+  </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+</head>
+<body>
+<div id="sidebar">
+<h3>Sections</h3>
+<ul id="toc-list">
+<li><a data-page="1" href="#">Section 1</a></li>
+<li><a data-page="2" href="#">Section 2</a></li>
+<li><a data-page="3" href="#">Section 3</a></li>
+</ul>
+</div>
+<div id="viewer-container">
+<div id="controls">
+<button id="prev">Previous</button><button id="zoom-in">Zoom In</button><button id="zoom-out">Zoom Out</button>
+<button id="next">Next</button>
+<button id="print-pdf">Print PDF</button>
+<span>Page: <span id="page-num">1</span> / <span id="page-count">1</span></span>
+</div>
+<canvas id="pdfViewer"></canvas>
+
+</div>
+<script>
+  let pdfDoc = null,
+    currentScale = 1,
+      currentPage = 1,
+      scale = 1,
+      canvas = document.getElementById('pdfViewer'),
+      ctx = canvas.getContext('2d');
+
+  function renderPage(num) {
+    document.getElementById('page-num').textContent = num;
+    pdfDoc.getPage(num).then(page => {
+      const viewport = page.getViewport({ scale });
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+
+      page.render({ canvasContext: ctx, viewport }).promise.then(() => {
+        document.getElementById('page-num').textContent = num;
+      });
+    });
+  }
+
+  function queueRenderPage(num) {
+    if (num >= 1 && num <= pdfDoc.numPages) {
+      currentPage = num;
+      renderPage(num);
+    }
+  }
+
+  document.getElementById('prev').addEventListener('click', () => {
+    if (currentPage > 1) {
+      queueRenderPage(--currentPage);
+    }
+  });
+
+  document.getElementById('next').addEventListener('click', () => {
+    if (currentPage < pdfDoc.numPages) {
+      queueRenderPage(++currentPage);
+    }
+  });
+
+  document.getElementById('print-pdf').addEventListener('click', () => {
+    const dataUrl = canvas.toDataURL();
+    const w = window.open();
+    w.document.write('<img src="' + dataUrl + '" style="width:100%">');
+    w.print();
+    w.close();
+  });
+
+  document.querySelectorAll('#toc-list a').forEach(link => {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      const page = parseInt(this.dataset.page, 10);
+      if (!isNaN(page)) queueRenderPage(page);
+    });
+  });
+
+  function loadPdf(path) {
+    pdfjsLib.getDocument(path).promise.then(pdf => {
+      pdfDoc = pdf;
+      document.getElementById('page-count').textContent = pdf.numPages;
+      renderPage(currentPage);
+    });
+  }
+
+const pdfPath = new URLSearchParams(window.location.search).get("file");
+
+if (pdfPath) {
+  loadPdf(pdfPath);
+}
+
+window.addEventListener('message', (event) => {
+  if (event.data?.type === 'load-pdf' && event.data.path) {
+    loadPdf(event.data.path);
+  }
+});
+
+
+
+  window.queueRenderPage = queueRenderPage;
+
+document.getElementById('zoom-in').addEventListener('click', () => {
+  currentScale = Math.min(currentScale + 0.25, 3);
+  renderPage(currentPage);
+});
+document.getElementById('zoom-out').addEventListener('click', () => {
+  currentScale = Math.max(currentScale - 0.25, 0.5);
+  renderPage(currentPage);
+});
+</script>
+</body>
+</html>
