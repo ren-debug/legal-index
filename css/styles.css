@@ -1,0 +1,117 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  margin: 0;
+  background: #fff;
+}
+
+h1 {
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.table-controls {
+  margin-bottom: 15px;
+}
+
+.table-container {
+  overflow-x: auto;
+  width: 100%;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+th {
+  background-color: #f0f0f0;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+
+th .sort-icon {
+  margin-left: 8px;
+  font-size: 0.8em;
+  opacity: 0.5;
+}
+
+th:hover .sort-icon {
+  opacity: 1;
+}
+
+tr:hover {
+  background-color: #f9f9f9;
+}
+
+a {
+  color: #0645AD;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+
+
+@media screen and (max-width: 768px) {
+  table {
+    font-size: 12px;
+  }
+}
+
+/* PDF Reader Styles */
+.pdf-reader-container {
+    margin-top: 40px;
+    padding: 20px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 620px; /* Adjust as needed */
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fcfcfc;
+}
+
+#pdfViewer {
+    max-width: 100%; /* Ensure the PDF fits within its container */
+    height: auto;
+    border: 1px solid #ddd;
+    margin-top: 15px;
+    background-color: #fff;
+}
+
+#pdf-navigation button {
+    padding: 8px 15px;
+    margin: 0 5px;
+    cursor: pointer;
+    background-color: #0645AD;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+#pdf-navigation button:hover {
+    background-color: #04368a;
+}
+
+#pdf-navigation button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+#page-num, #page-count {
+    font-weight: bold;
+    margin: 0 5px;
+}
+

@@ -1,0 +1,51 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+#toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #f8f8f8;
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  z-index: 999;
+}
+
+#viewer-container {
+  position: relative;
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+}
+
+canvas {
+  border: 1px solid #ccc;
+}
+
+.textLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.textLayer span {
+  position: absolute;
+  white-space: pre;
+  transform-origin: 0 0;
+  line-height: 1;
+}
+
+#loader {
+  text-align: center;
+  margin-top: 100px;
+  font-weight: bold;
+  color: #007BFF;
+}
