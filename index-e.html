@@ -38,7 +38,7 @@
     <a href="index-c.html">Section C</a>
     <a href="index-d.html">Section D</a>
     <a href="index-e.html">Section E</a>
-    <a href="index-f.html">Section F</a>
+    <a href="index-f.html">Communications</a>
     <a href="index-t.html">TOLATA Exhibits</a>
     <a href="index-n.html">NMO Exhibits</a>
   </nav>
@@ -60,10 +60,11 @@
           <th class="sortable" data-column="exhibitNo">Exhibit No<span class="sort-icon">↕</span></th>
           <th class="sortable" data-column="category">Category<span class="sort-icon">↕</span></th>
           <th class="sortable" data-column="type">Type<span class="sort-icon">↕</span></th>
-          <th class="sortable" data-column="media">Media<span class="sort-icon">↕</span></th>
+          <th class="sortable" data-column="description">Description<span class="sort-icon">↕</span></th>
           <th class="sortable" data-column="date">Date<span class="sort-icon">↕</span></th>
           <th class="sortable" data-column="author">Author<span class="sort-icon">↕</span></th>
-          <th class="sortable" data-column="description">Description<span class="sort-icon">↕</span></th>
+          <th class="sortable" data-column="section">Section<span class="sort-icon">↕</span></th>
+          <th class="sortable" data-column="media">Media<span class="sort-icon">↕</span></th>
           <th>View</th>
           <th>Download</th>
         </tr>
@@ -73,15 +74,15 @@
     </table>
   </div>
 
-  <div class="pdf-reader-container">
-    <h2>Document Viewer</h2>
-    <canvas id="pdfViewer"></canvas>
-    <div id="pdf-navigation" style="margin-top: 10px;">
-      <button id="prev-page">Previous</button>
-      <span id="page-num"></span> / <span id="page-count"></span>
-      <button id="next-page">Next</button>
+    <div class="pdf-reader-container">
+      <button id="open-in-tab">Open Viewer in New Tab</button>
+      <canvas id="pdfViewer"></canvas>
+      <div id="pdf-navigation" style="margin-top: 10px;">
+        <button id="prev-page">Previous</button>
+        <span id="page-num">1</span> / <span id="page-count">1</span>
+        <button id="next-page">Next</button>
+      </div>
     </div>
-  </div>
   <script src="data/data-e.js"></script>
   <script src="js/script.js"></script>
   <script src="js/viewer.js"></script>
