@@ -33,8 +33,19 @@
       margin: 90px auto 20px;
       border: 1px solid #ccc;
     }
+
+    .highlight-box {
+      background-color: yellow;
+      opacity: 0.4;
+      position: absolute;
+      border: 1px dashed #ccc;
+      pointer-events: auto;
+      cursor: pointer;
+    }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+
+
 </head>
 
 <body>
@@ -54,7 +65,8 @@
       <span>Page: <span id="page-num">1</span> / <span id="page-count">1</span></span>
     </div>
     <canvas id="pdfViewer"></canvas>
-
+    <div id="highlight-layer" style="position:absolute; top:90px; left:0; right:0; pointer-events:none;"></div>
+    <div id="notes-container" style="position:fixed; right:10px; top:100px; background:#fff; padding:10px; border:1px solid #ccc; max-width:200px; z-index:1000;"></div>
   </div>
 
 <script>
@@ -66,18 +78,15 @@
 
 function renderPage(num) {
   pdfDoc.getPage(num).then(page => {
-    const outputScale = window.devicePixelRatio || 2; // High-DPI screens support
+    const outputScale = window.devicePixelRatio || 2;
     const viewport = page.getViewport({ scale: currentScale });
 
-    // Create a scaled canvas
     canvas.width = Math.floor(viewport.width * outputScale);
     canvas.height = Math.floor(viewport.height * outputScale);
     canvas.style.width = `${viewport.width}px`;
     canvas.style.height = `${viewport.height}px`;
 
-    const transform = outputScale !== 1
-      ? [outputScale, 0, 0, outputScale, 0, 0]
-      : null;
+    const transform = outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
 
     const renderContext = {
       canvasContext: ctx,
@@ -92,76 +101,106 @@ function renderPage(num) {
   });
 }
 
-
-  function queueRenderPage(num) {
-    if (num >= 1 && num <= pdfDoc.numPages) {
-      currentPage = num;
-      renderPage(num);
-    }
+function queueRenderPage(num) {
+  if (num >= 1 && num <= pdfDoc.numPages) {
+    currentPage = num;
+    renderPage(num);
   }
+}
 
-  document.getElementById('prev').addEventListener('click', () => {
-    if (currentPage > 1) {
-      queueRenderPage(--currentPage);
-    }
+document.getElementById('prev').addEventListener('click', () => {
+  if (currentPage > 1) {
+    queueRenderPage(--currentPage);
+  }
+});
+
+document.getElementById('next').addEventListener('click', () => {
+  if (currentPage < pdfDoc.numPages) {
+    queueRenderPage(++currentPage);
+  }
+});
+
+document.getElementById('zoom-in').addEventListener('click', () => {
+  currentScale = Math.min(currentScale + 0.25, 3);
+  renderPage(currentPage);
+});
+
+document.getElementById('zoom-out').addEventListener('click', () => {
+  currentScale = Math.max(currentScale - 0.25, 0.5);
+  renderPage(currentPage);
+});
+
+document.getElementById('print-pdf').addEventListener('click', () => {
+  const dataUrl = canvas.toDataURL();
+  const w = window.open();
+  w.document.write(`<html><head><title>Print PDF</title></head><body><img src="${dataUrl}" style="width:100%"></body></html>`);
+  w.document.close();
+  w.focus();
+  w.print();
+  w.close();
+});
+
+document.querySelectorAll('#toc-list a').forEach(link => {
+  link.addEventListener('click', function (e) {
+    e.preventDefault();
+    const page = parseInt(this.dataset.page, 10);
+    if (!isNaN(page)) queueRenderPage(page);
   });
+});
 
-  document.getElementById('next').addEventListener('click', () => {
-    if (currentPage < pdfDoc.numPages) {
-      queueRenderPage(++currentPage);
-    }
-  });
-
-  document.getElementById('zoom-in').addEventListener('click', () => {
-    currentScale = Math.min(currentScale + 0.25, 3);
+function loadPdf(path) {
+  pdfjsLib.getDocument(path).promise.then(pdf => {
+    pdfDoc = pdf;
+    currentPage = 1;
+    document.getElementById('page-count').textContent = pdf.numPages;
     renderPage(currentPage);
   });
+}
 
-  document.getElementById('zoom-out').addEventListener('click', () => {
-    currentScale = Math.max(currentScale - 0.25, 0.5);
-    renderPage(currentPage);
-  });
+const pdfPath = new URLSearchParams(window.location.search).get("file");
+if (pdfPath) {
+  loadPdf(pdfPath);
+}
 
-  document.getElementById('print-pdf').addEventListener('click', () => {
-    const dataUrl = canvas.toDataURL();
-    const w = window.open();
-    w.document.write(`<html><head><title>Print PDF</title></head><body><img src="${dataUrl}" style="width:100%"></body></html>`);
-    w.document.close();
-    w.focus();
-    w.print();
-    w.close();
-  });
-
-  document.querySelectorAll('#toc-list a').forEach(link => {
-    link.addEventListener('click', function (e) {
-      e.preventDefault();
-      const page = parseInt(this.dataset.page, 10);
-      if (!isNaN(page)) queueRenderPage(page);
-    });
-  });
-
-  function loadPdf(path) {
-    pdfjsLib.getDocument(path).promise.then(pdf => {
-      pdfDoc = pdf;
-      currentPage = 1;
-      document.getElementById('page-count').textContent = pdf.numPages;
-      renderPage(currentPage);
-    });
+window.addEventListener('message', (event) => {
+  if (event.data?.type === 'load-pdf' && event.data.path) {
+    loadPdf(event.data.path);
   }
+});
 
-  // Load from ?file= param or postMessage
-  const pdfPath = new URLSearchParams(window.location.search).get("file");
-  if (pdfPath) {
-    loadPdf(pdfPath);
-  }
-
-  window.addEventListener('message', (event) => {
-    if (event.data?.type === 'load-pdf' && event.data.path) {
-      loadPdf(event.data.path);
+canvas.addEventListener('mouseup', function (e) {
+  const selection = window.getSelection();
+  const selectedText = selection.toString().trim();
+  if (selectedText) {
+    const note = prompt("Add a note for this highlight:", "");
+    if (note !== null) {
+      addHighlight(note);
     }
+    selection.removeAllRanges();
+  }
+});
+
+function addHighlight(noteText) {
+  const span = document.createElement("span");
+  span.className = "highlight-box";
+  span.style.top = `${Math.random() * canvas.clientHeight}px`;
+  span.style.left = `${Math.random() * canvas.clientWidth}px`;
+  span.style.width = '80px';
+  span.style.height = '20px';
+
+  span.title = noteText;
+
+  span.addEventListener("click", () => {
+    alert("Note: " + noteText);
   });
 
-  window.queueRenderPage = queueRenderPage;
+  document.getElementById("highlight-layer").appendChild(span);
+
+  const noteEntry = document.createElement("div");
+  noteEntry.textContent = noteText;
+  document.getElementById("notes-container").appendChild(noteEntry);
+}
 </script>
+
 </body>
 </html>

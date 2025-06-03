@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Annotated PDF Viewer</title>
+  <link rel="stylesheet" href="https://unpkg.com/pdfjs-annotation-extension@latest/dist/pdf.annotator.css">
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+    #pdf-viewer { width: 100%; height: 100%; }
+  </style>
+</head>
+<body>
+  <div id="pdf-viewer"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+  <script type="module">
+    import { Annotator } from 'https://unpkg.com/pdfjs-annotation-extension@latest/dist/pdf.annotator.mjs';
+
+    const viewer = document.getElementById('pdf-viewer');
+    const url = new URLSearchParams(window.location.search).get('file') || 'example.pdf';
+
+    const annotator = new Annotator(viewer, {
+      pdfUrl: url,
+      enableToolbar: true
+    });
+
+    annotator.loadDocument().catch(console.error);
+  </script>
+</body>
+</html>

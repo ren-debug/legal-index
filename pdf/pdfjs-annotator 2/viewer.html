@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PDF Annotator</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pdfjs-annotation-layer@0.1.5/dist/pdf.annotator.min.css">
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+    #pdf-viewer { width: 100vw; height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="pdf-viewer"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-annotation-layer@0.1.5/dist/pdf.annotator.min.js"></script>
+  <script>
+    const viewer = document.getElementById('pdf-viewer');
+    const pdfUrl = 'example.pdf'; // Replace with your PDF or use ?file=
+
+    const annotator = new window.PDFAnnotator(viewer, {
+      pdfUrl: pdfUrl,
+      enableToolbar: true
+    });
+
+    annotator.loadDocument().catch(console.error);
+  </script>
+</body>
+</html>
