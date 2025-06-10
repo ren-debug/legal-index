@@ -167,6 +167,41 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  let currentPageNum = 1;
+
+function renderPage(num) {
+  if (!pdfDoc) return;
+  pdfDoc.getPage(num).then(page => {
+    const viewport = page.getViewport({ scale: 1.5 });
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
+    const renderContext = { canvasContext: ctx, viewport };
+    page.render(renderContext);
+    currentPageNum = num;
+    document.getElementById("page-num").textContent = num;
+    document.getElementById("page-count").textContent = pdfDoc.numPages;
+    updatePdfNavigationButtons();
+  });
+}
+
+function updatePdfNavigationButtons() {
+  document.getElementById("prev-page").disabled = currentPageNum <= 1;
+  document.getElementById("next-page").disabled = currentPageNum >= pdfDoc.numPages;
+}
+
+document.getElementById("prev-page").addEventListener("click", () => {
+  if (currentPageNum > 1) {
+    renderPage(currentPageNum - 1);
+  }
+});
+
+document.getElementById("next-page").addEventListener("click", () => {
+  if (currentPageNum < pdfDoc.numPages) {
+    renderPage(currentPageNum + 1);
+  }
+});
+
+
   function attachPdfViewListeners() {
     document.querySelectorAll(".view-pdf-link").forEach(link => {
       link.addEventListener("click", e => {

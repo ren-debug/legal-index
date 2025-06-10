@@ -3,35 +3,116 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>WP letters</title>
+  <title>WP Letters</title>
   <link rel="stylesheet" href="./css/styles.css" />
   <style>
-    
+    body {
+      font-family: 'Times New Roman', serif;
+      margin: 60px;
+      background-color: #fff;
+      color: #000;
+      line-height: 1.6;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.8em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    button a {
+      text-decoration: none;
+      color: inherit;
+    }
+
     .nav-menu {
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
       gap: 1rem;
-      margin: 10px 0 20px;
-      padding: 0;
       list-style: none;
+      margin: 20px 0;
+      padding: 0;
     }
 
     .nav-menu a {
       text-decoration: none;
-      color: #007BFF;
       font-weight: bold;
+      color: #003366;
     }
 
     .nav-menu a:hover {
       text-decoration: underline;
     }
+
+    .table-controls {
+      margin: 20px 0;
+      font-size: 0.95em;
+    }
+
+    select {
+      font-family: inherit;
+      padding: 5px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 0.95em;
+    }
+
+    th, td {
+      border: 1px solid #000;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+
+    .sort-icon {
+      font-size: 0.8em;
+      margin-left: 5px;
+    }
+
+    .pdf-reader-container {
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    canvas {
+      border: 1px solid #ccc;
+      margin-top: 20px;
+      max-width: 100%;
+    }
+
+    #pdf-navigation {
+      margin-top: 10px;
+    }
+
+    #pagination-info {
+      margin: 0 10px;
+    }
+
+    button {
+      font-family: inherit;
+      padding: 6px 12px;
+      margin: 5px;
+    }
+
   </style>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
 </head>
 <body>
-  <button><a href="index.html">Index</a></button>
-  <h1>Communications</h1>
+
+  <button><a href="bundle-index.html">← Back to Bundle Index</a></button>
+  <h1>Without Prejudice Letters</h1>
 
   <nav class="nav-menu">
     <a href="index-a.html">Section A</a>
@@ -40,10 +121,9 @@
     <a href="index-d.html">Section D</a>
     <a href="index-e.html">Section E</a>
     <a href="index-f.html">Communications</a>
-   <a href="index-w.html">WP letters</a>
+    <a href="index-w.html">WP letters</a>
     <a href="index-t.html">TOLATA Exhibits</a>
     <a href="index-n.html">NMO Exhibits</a>
-
   </nav>
 
   <div class="table-controls">
@@ -54,7 +134,6 @@
       <option value="Health Impact">Health Impact</option>
       <option value="Criminal Law">Criminal Law</option>
       <option value="Correspondence">Correspondence</option>
-
     </select>
   </div>
 
@@ -75,27 +154,29 @@
         </tr>
       </thead>
       <tbody id="table-body">
+        <!-- Populated dynamically by JS -->
       </tbody>
     </table>
-     <div style="text-align: right; margin-top: 10px;">
+
+    <div style="text-align: right; margin-top: 10px;">
       <button id="prev-page-btn" onclick="goToPrevPage()">← Prev</button>
       <span id="pagination-info">Page 1</span>
       <button id="next-page-btn" onclick="goToNextPage()">Next →</button>
     </div>
   </div>
 
-    <div class="pdf-reader-container">
-      <button id="open-in-tab">Open Viewer in New Tab</button>
-      <canvas id="pdfViewer"></canvas>
-      <div id="pdf-navigation" style="margin-top: 10px;">
-        <button id="prev-page">Previous</button>
-        <span id="page-num">1</span> / <span id="page-count">1</span>
-        <button id="next-page">Next</button>
-      </div>
+  <div class="pdf-reader-container">
+    <button id="open-in-tab">Open Viewer in New Tab</button>
+    <canvas id="pdfViewer"></canvas>
+    <div id="pdf-navigation">
+      <button id="prev-page">Previous</button>
+      <span id="page-num">1</span> / <span id="page-count">1</span>
+      <button id="next-page">Next</button>
     </div>
+  </div>
 
-    <script src="data/data-comm.js"></script>
+  <script src="data/data-comm.js"></script>
   <script src="js/script.js"></script>
-  <!-- <script src="js/viewer.js"></script> -->
+  <script src="js/viewer.js"></script>
 </body>
 </html>

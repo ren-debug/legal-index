@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>WP letters</title>
-  <link rel="stylesheet" href="./css/styles.css" />
+  <title>Legal Exhibits Index</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
   <style>
-    
     .nav-menu {
       display: flex;
       justify-content: center;
@@ -26,12 +27,9 @@
       text-decoration: underline;
     }
   </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
 </head>
 <body>
-  <button><a href="index.html">Index</a></button>
-  <h1>Communications</h1>
+  <h1>Index of Legal Exhibits</h1>
 
   <nav class="nav-menu">
     <a href="index-a.html">Section A</a>
@@ -40,10 +38,10 @@
     <a href="index-d.html">Section D</a>
     <a href="index-e.html">Section E</a>
     <a href="index-f.html">Communications</a>
-   <a href="index-w.html">WP letters</a>
+     <a href="index-w.html">WP letters</a>
+
     <a href="index-t.html">TOLATA Exhibits</a>
     <a href="index-n.html">NMO Exhibits</a>
-
   </nav>
 
   <div class="table-controls">
@@ -53,8 +51,8 @@
       <option value="Family Law">Family Law</option>
       <option value="Health Impact">Health Impact</option>
       <option value="Criminal Law">Criminal Law</option>
-      <option value="Correspondence">Correspondence</option>
-
+      <option value="Court Applications">Court Applications</option>
+      <option value="TOLATA">TOLATA</option>
     </select>
   </div>
 
@@ -64,10 +62,10 @@
         <tr>
           <th class="sortable" data-column="exhibitNo">Exhibit No<span class="sort-icon">↕</span></th>
           <th class="sortable" data-column="category">Category<span class="sort-icon">↕</span></th>
-          <th class="sortable" data-column="type">Type<span class="sort-icon">↕</span></th>
-          <th class="sortable" data-column="description">Description<span class="sort-icon">↕</span></th>
           <th class="sortable" data-column="date">Date<span class="sort-icon">↕</span></th>
+          <th class="sortable" data-column="type">Type<span class="sort-icon">↕</span></th>
           <th class="sortable" data-column="author">Author<span class="sort-icon">↕</span></th>
+          <th class="sortable" data-column="description">Description<span class="sort-icon">↕</span></th>
           <th class="sortable" data-column="section">Section<span class="sort-icon">↕</span></th>
           <th class="sortable" data-column="media">Media<span class="sort-icon">↕</span></th>
           <th>View</th>
@@ -77,7 +75,7 @@
       <tbody id="table-body">
       </tbody>
     </table>
-     <div style="text-align: right; margin-top: 10px;">
+       <div style="text-align: right; margin-top: 10px;">
       <button id="prev-page-btn" onclick="goToPrevPage()">← Prev</button>
       <span id="pagination-info">Page 1</span>
       <button id="next-page-btn" onclick="goToNextPage()">Next →</button>
@@ -93,9 +91,8 @@
         <button id="next-page">Next</button>
       </div>
     </div>
-
-    <script src="data/data-comm.js"></script>
+  <script src="js/data.js"></script>
   <script src="js/script.js"></script>
-  <!-- <script src="js/viewer.js"></script> -->
+  <script src="js/viewer.js"></script>
 </body>
 </html>
